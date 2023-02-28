@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+ <div class="container">
+      <h1>Todo List</h1>
+      <form method = 'POST' action="{% url 'add' %}">
+      {% csrf_token %}
+        <input type="text" name = 'title' placeholder="Add a task ">
+        <button type="submit">Add</button>
+      </form>
+      <ul class="list">
+      {% for task in tasks %}
+        <li>
+          <span>{{ task.title }}</span>
+          <div class="buttons">
+            <button class="delete" "><a href = "{% url 'delete' task.pk %}" >Delete</a></button>
+            {% if task.done %}
+            <button class="update" ><a href = "{% url 'update' task.pk %}" >Done!</a></button>
+            {% else %}
+            <button class="doing" href = "{% url 'update' task.pk %}"><a href = "{% url 'update' task.pk %}" >Doing...</a></button>
+            {% endif %}
+          </div>
+        </li>
+        {% empty %}
+        <li>
+          No to-do items yet
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+{% endblock %}
